@@ -30,49 +30,54 @@ def vector(sentences):
 
 def senti(ebdsi, word):
     # print(word)
-    sql = "SELECT * FROM sheet1 WHERE 词语 = '%s'" % word
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    # print(result)
-    if result is not None:
-        status = result[1]
-        strength = result[2]
-        attitude = result[3]
-        aux_status = result[4]
-        aux_strength = result[5]
-        aux_attitude = result[6]
-        cnt = 0
-        for items in result_list:
-            if items == status:
-                if attitude == '0':
-                    ebdsi[cnt * 2] += 0.5 * float(strength)
-                    ebdsi[cnt * 2 + 1] += 0.5 * float(strength)
-                if attitude == '1':
-                    ebdsi[cnt * 2] += 1.0 * float(strength)
-                if attitude == '2':
-                    ebdsi[cnt * 2 + 1] += 1.0 * float(strength)
-                if attitude == '3':
-                    ebdsi[cnt * 2] += 1.0 * float(strength)
-                    ebdsi[cnt * 2 + 1] += 1.0 * float(strength)
-                break
-            cnt += 1
-        cnt = 0
-        if aux_status is not None:
+    try:
+        sql = "SELECT * FROM sheet1 WHERE 词语 = '%s'" % word
+        cursor.execute(sql)
+    except Exception as e:
+        print(e)
+        return ebdsi
+    else:
+        result = cursor.fetchone()
+        # print(result)
+        if result is not None:
+            status = result[1]
+            strength = result[2]
+            attitude = result[3]
+            aux_status = result[4]
+            aux_strength = result[5]
+            aux_attitude = result[6]
+            cnt = 0
             for items in result_list:
-                if items == aux_status:
-                    if aux_attitude == '0':
-                        ebdsi[cnt * 2] += 0.5 * float(aux_strength)
-                        ebdsi[cnt * 2 + 1] += 0.5 * float(aux_strength)
-                    if aux_attitude == '1':
-                        ebdsi[cnt * 2] += 1.0 * float(aux_strength)
-                    if aux_attitude == '2':
-                        ebdsi[cnt * 2 + 1] += 1.0 * float(aux_strength)
-                    if aux_attitude == '3':
-                        ebdsi[cnt * 2] += 1.0 * float(aux_strength)
-                        ebdsi[cnt * 2 + 1] += 1.0 * float(aux_strength)
+                if items == status:
+                    if attitude == '0':
+                        ebdsi[cnt * 2] += 0.5 * float(strength)
+                        ebdsi[cnt * 2 + 1] += 0.5 * float(strength)
+                    if attitude == '1':
+                        ebdsi[cnt * 2] += 1.0 * float(strength)
+                    if attitude == '2':
+                        ebdsi[cnt * 2 + 1] += 1.0 * float(strength)
+                    if attitude == '3':
+                        ebdsi[cnt * 2] += 1.0 * float(strength)
+                        ebdsi[cnt * 2 + 1] += 1.0 * float(strength)
                     break
                 cnt += 1
-    return ebdsi
+            cnt = 0
+            if aux_status is not None:
+                for items in result_list:
+                    if items == aux_status:
+                        if aux_attitude == '0':
+                            ebdsi[cnt * 2] += 0.5 * float(aux_strength)
+                            ebdsi[cnt * 2 + 1] += 0.5 * float(aux_strength)
+                        if aux_attitude == '1':
+                            ebdsi[cnt * 2] += 1.0 * float(aux_strength)
+                        if aux_attitude == '2':
+                            ebdsi[cnt * 2 + 1] += 1.0 * float(aux_strength)
+                        if aux_attitude == '3':
+                            ebdsi[cnt * 2] += 1.0 * float(aux_strength)
+                            ebdsi[cnt * 2 + 1] += 1.0 * float(aux_strength)
+                        break
+                    cnt += 1
+        return ebdsi
 
 
 if __name__ == '__main__':
