@@ -1,0 +1,59 @@
+INPUT_SIZE = 42 + 512
+HIDDEN_SIZE = 256
+OUT_DIM = 6
+BATCH_SIZE = 32
+LR = 3e-4
+EPOCHS = 15
+Epoch 15:Validation accuracy did not increase
+	Train_loss : 0.7735 Val_loss : 0.8622
+	Train_acc : 70.990% Val_acc : 68.132%
+-----------------------------------------------------------------
+INPUT_SIZE = 42 + 512
+HIDDEN_SIZE = 256
+OUT_DIM = 6
+BATCH_SIZE = 64
+LR = 3e-4
+EPOCHS = 15
+Epoch 15:Validation accuracy did not increase
+	Train_loss : 0.7783 Val_loss : 0.8663
+	Train_acc : 70.938% Val_acc : 68.205%
+----------------------------------------------------------------------
+INPUT_SIZE = 42 + 512
+HIDDEN_SIZE = 42 + 512
+OUT_DIM = 6
+BATCH_SIZE = 64
+LR = 3e-4
+EPOCHS = 15
+Epoch 15:Validation accuracy did not increase
+	Train_loss : 0.7707 Val_loss : 0.8613
+	Train_acc : 71.170% Val_acc : 68.060%
+----------------------------------------------------------------------
+INPUT_SIZE = 42 + 512
+HIDDEN_SIZE = 42 + 512
+OUT_DIM = 6
+BATCH_SIZE = 256
+LR = 3e-4
+EPOCHS = 20
+Early stopped at epoch : 20
+	Train_loss : 0.7847 Val_loss : 0.8658
+	Train_acc : 70.719% Val_acc : 68.008%
+---------------------------------------------------------------------------
+INPUT_SIZE = 42 + 512            SHUFFLE = FALSE
+HIDDEN_SIZE = 256
+OUT_DIM = 6
+BATCH_SIZE = 32
+LR = 3e-4
+EPOCHS = 50
+Epoch 50:Validation accuracy did not increase
+	Train_loss : 0.6368 Val_loss : 0.8759
+	Train_acc : 76.362% Val_acc : 68.496%
+Accuracy is  0.375
+/////////////////////////
+
+训练结果总结：效果很差。
+已知的情况：验证集正确率在68%上下 测试集正确率37.5%  直接使用sentence-bert给出句向量做分类效果仍未变好。
+猜测的原因：分词识别得出的情感向量与sentence-bert得出的句向量的拼接不适用于这项任务；处理数据的代码有错误。
+接下来的尝试：
+1 debug
+2 尝试  (情感向量)+sbert+ cnn
+3 尝试  lstm直接嵌入bert做embedding来训练
