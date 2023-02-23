@@ -20,7 +20,7 @@ from transformers import AdamW, get_linear_schedule_with_warmup
 
 
 MAX_LEN = 512  # 处理的最长长度
-BATCH_SIZE = 8
+BATCH_SIZE = 12 # 16时 16G显存装不下
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 EPOCHS = 5
 FALSE_IDS = np.zeros(512,)
@@ -257,3 +257,31 @@ def BertTrain(model, train_dataloader, val_dataloader, epochs, evaluation=True):
 
 
 BertTrain(bert_classifier, train_dataloader, val_dataloader, epochs=EPOCHS)
+tokenizer.save_pretrained("./model")
+
+def bert_predict(model, test_dataloader):
+    # Define empty list to host the predictions
+    preds_list = []
+
+    # Put the model into evaluation mode
+    model.eval()
+
+    for batch in test_dataloader:
+        batch_input_ids, batch_attention_mask = tuple(t.to(DEVICE) for t in batch)[:2]
+
+        # Avoid gradient calculation of tensors by using "no_grad()" method
+        with torch.no_grad():
+            logit = model(batch_input_ids, batch_attention_mask)
+
+        # Get index of highest logit
+        pred = torch.argmax(logit, dim=1).cpu().numpy()
+        # Append predicted class to list
+        preds_list.extend(pred)
+
+    return preds_list
+
+
+bert_preds = bert_predict(bert_classifier, test_dataloader)
+accuracy = (bert_preds == y_test).cpu().numpy().mean() * 100
+
+print("the accuracy is ",accuracy,"%")
