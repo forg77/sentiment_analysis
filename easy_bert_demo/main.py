@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import time
 import torch
+from sklearn.metrics import classification_report
 from torch import nn
 from torch.utils.data import TensorDataset, RandomSampler, DataLoader, SequentialSampler
 from sklearn.model_selection import train_test_split
@@ -17,7 +18,7 @@ from transformers import AdamW, get_linear_schedule_with_warmup
 # 3 surprise 2086
 # 4 sad 4990
 # 5 fear 1220
-
+sentiments = ["neutral", "angry", "happy", "surprise", "sad", "fear"]
 
 MAX_LEN = 512  # 处理的最长长度
 BATCH_SIZE = 12 # 16时 16G显存装不下
@@ -282,6 +283,4 @@ def bert_predict(model, test_dataloader):
 
 
 bert_preds = bert_predict(bert_classifier, test_dataloader)
-accuracy = (bert_preds == y_test).cpu().numpy().mean() * 100
-
-print("the accuracy is ",accuracy,"%")
+print('Classification Report for BERT :\n', classification_report(y_test, bert_preds, target_names=sentiments))
