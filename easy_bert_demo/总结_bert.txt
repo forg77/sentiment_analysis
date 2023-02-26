@@ -1,3 +1,4 @@
+epoch = 5
 Classification Report for BERT :
                precision    recall  f1-score   support
    neutral       0.85      0.83      0.84       420
@@ -12,3 +13,20 @@ Classification Report for BERT :
 weighted avg       0.77      0.76      0.76      2000
 
 分类的效果比较好 用来做benchmark 时间不够的话就用这个了
+epoch = 15
+Classification Report for BERT :
+               precision    recall  f1-score   support
+
+     neutral       0.84      0.82      0.83       420
+       angry       0.83      0.82      0.83       586
+       happy       0.77      0.77      0.77       391
+    surprise       0.63      0.59      0.61       170
+         sad       0.64      0.68      0.66       346
+        fear       0.67      0.70      0.69        87
+
+    accuracy                           0.76      2000
+   macro avg       0.73      0.73      0.73      2000
+weighted avg       0.76      0.76      0.76      2000
+
+训练效果几乎没有提升 
+
