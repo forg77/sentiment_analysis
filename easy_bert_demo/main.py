@@ -257,7 +257,7 @@ def BertTrain(model, train_dataloader, val_dataloader, epochs, evaluation=True):
         print(f"{avg_train_loss:^14.6f} | {val_loss:^10.6f} | {val_accuracy:^17.2f} | {time_elapsed:^9.2f}")
         print("-" * 61)
         print("\n")
-    model.save_pretrained("./model")
+    torch.save(model.state_dict(),'.\model')
 
 BertTrain(bert_classifier, train_dataloader, val_dataloader, epochs=EPOCHS)
 tokenizer.save_pretrained("./model")
