@@ -29,4 +29,23 @@ Classification Report for BERT :
 weighted avg       0.76      0.76      0.76      2000
 
 训练效果几乎没有提升 
+---------------------------------------------------
+max_size = 256 
+batch_size = 32
+lr = 5e-5
+epoch = 4
+Classification Report for BERT :
+               precision    recall  f1-score   support
+
+     neutral       0.87      0.81      0.84       420
+       angry       0.84      0.82      0.83       586
+       happy       0.77      0.82      0.80       391
+    surprise       0.67      0.62      0.64       170
+         sad       0.64      0.66      0.65       346
+        fear       0.62      0.74      0.67        87
+
+    accuracy                           0.77      2000
+   macro avg       0.74      0.75      0.74      2000
+weighted avg       0.77      0.77      0.77      2000
+
 
