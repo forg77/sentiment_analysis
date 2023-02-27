@@ -20,11 +20,12 @@ from transformers import AdamW, get_linear_schedule_with_warmup
 # 5 fear 1220
 sentiments = ["neutral", "angry", "happy", "surprise", "sad", "fear"]
 
-MAX_LEN = 512  # 处理的最长长度
-BATCH_SIZE = 12 # 16时 16G显存装不下
+MAX_LEN = 256  # 处理的最长长度
+BATCH_SIZE = 40
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
-EPOCHS = 5
-FALSE_IDS = np.zeros(512,)
+EPOCHS = 4
+Learning_Rate = 5e-5
+FALSE_IDS = np.zeros(256,)
 df = pd.read_csv("usual_train.csv")
 df1 = pd.read_csv("usual_eval_labeled.csv")
 X = df['text'].values
@@ -93,8 +94,9 @@ class BertClassifier(nn.Module):
         super(BertClassifier, self).__init__()
         # Specify hidden size of BERT, hidden size of the classifier, and number of labels
         n_input = 768
-        n_hidden = 32
+        n_hidden = 100
         n_output = 6
+
         # Instantiate BERT model
         self.bert = BertModel.from_pretrained('hfl/chinese-macbert-base')
 
@@ -118,7 +120,7 @@ class BertClassifier(nn.Module):
 
         # Extract the last hidden state of the token `[CLS]` for classification task
         last_hidden_state_cls = outputs[0][:, 0, :]
-
+        #print(last_hidden_state_cls.shape)
         # Feed input to classifier to compute logits
         logits = self.classifier(last_hidden_state_cls)
 
@@ -255,7 +257,7 @@ def BertTrain(model, train_dataloader, val_dataloader, epochs, evaluation=True):
         print(f"{avg_train_loss:^14.6f} | {val_loss:^10.6f} | {val_accuracy:^17.2f} | {time_elapsed:^9.2f}")
         print("-" * 61)
         print("\n")
-
+    model.save_pretrained("./model")
 
 BertTrain(bert_classifier, train_dataloader, val_dataloader, epochs=EPOCHS)
 tokenizer.save_pretrained("./model")
