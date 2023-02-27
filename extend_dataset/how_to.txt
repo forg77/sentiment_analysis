@@ -1,0 +1,7 @@
+只选取极性大于7等于的作为标识
+# 0 neutral 5749 + else remain
+# 1 angry 8344 + NA + ND + NN + NK + NL
+# 2 happy 5379 + PA + PE 
+# 3 surprise 2086 + PC
+# 4 sad 4990 + NB + NJ +NH + PF
+# 5 fear 1220 + NI + NC + NG
