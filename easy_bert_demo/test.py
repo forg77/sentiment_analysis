@@ -25,7 +25,7 @@ BATCH_SIZE = 40
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 EPOCHS = 4
 Learning_Rate = 5e-5
-FALSE_IDS = np.zeros(256,)
+FALSE_IDS = np.zeros(256, )
 df = pd.read_csv("usual_train.csv")
 df1 = pd.read_csv("usual_eval_labeled.csv")
 X = df['text'].values
@@ -52,7 +52,13 @@ def bert_tokenizer(data):
                 pad_to_max_length=True,  # Pad sentence to max length
                 return_attention_mask=True  # Return attention mask
             )
+            # k1 = encoded_sent.get('input_ids')
+            # print(k1)
+            # [101, 976, 749, 702, 679, 1962, 4638, 3457, 8024, 4994, 4197, 3193, 677, 6629, 3341, 2970, 4708, 2418, 7741, 749, 8024, 2571, 2828, 2769, 3698, 4156, 749, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             input_ids.append(encoded_sent.get('input_ids'))
+            # k2 = encoded_sent.get('attention_mask')
+            # print(k2)
+            # [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             attention_masks.append(encoded_sent.get('attention_mask'))
         except Exception as e:
             print(e)
@@ -63,7 +69,14 @@ def bert_tokenizer(data):
     # Convert lists to tensors
     input_ids = torch.tensor(input_ids)
     attention_masks = torch.tensor(attention_masks)
-
+    # print('###',input_ids.shape,'###')
+    ### torch.Size([40050, 256]) ###
+    ### torch.Size([5554, 256]) ###
+    ### torch.Size([2000, 256]) ###
+    # print('###',attention_masks.shape,'###')
+    ### torch.Size([40050, 256]) ###
+    ### torch.Size([5554, 256]) ###
+    ### torch.Size([2000, 256]) ###
     return input_ids, attention_masks
 
 
@@ -117,10 +130,10 @@ class BertClassifier(nn.Module):
         input_ids = input_ids.to(torch.int64)
         outputs = self.bert(input_ids=input_ids,
                             attention_mask=attention_mask)
-
+        # print(outputs,'11111')
         # Extract the last hidden state of the token `[CLS]` for classification task
         last_hidden_state_cls = outputs[0][:, 0, :]
-        #print(last_hidden_state_cls.shape)
+        # print(last_hidden_state_cls.shape)
         # Feed input to classifier to compute logits
         logits = self.classifier(last_hidden_state_cls)
 
@@ -153,114 +166,9 @@ def initialize_model(epochs=4):
 
 bert_classifier, optimizer, scheduler = initialize_model(epochs=EPOCHS)
 # Define Cross entropy Loss function for the multiclass classification task
+bert_classifier.load_state_dict(torch.load('./model'))
 loss_fn = nn.CrossEntropyLoss()
 
-
-def BertTrain(model, train_dataloader, val_dataloader, epochs, evaluation=True):
-    for epoch_i in range(epochs):
-        print("-" * 10)
-        print("Epoch : {}".format(epoch_i + 1))
-        print("-" * 10)
-        print("-" * 38)
-        print(f"{'BATCH NO.':^7} | {'TRAIN LOSS':^12} | {'ELAPSED (s)':^9}")
-        print("-" * 38)
-        # Measure the elapsed time of each epoch
-        t0_epoch, t0_batch = time.time(), time.time()
-
-        # Reset tracking variables at the beginning of each epoch
-        total_loss, batch_loss, batch_counts = 0, 0, 0
-
-        ###TRAINING###
-
-        # Put the model into the training mode
-        model.train()
-        for step, batch in enumerate(train_dataloader):
-            batch_counts += 1
-
-            b_input_ids, b_attn_mask, b_labels = tuple(t.to(DEVICE) for t in batch)
-            if b_input_ids == FALSE_IDS:
-                continue
-            # Zero out any previously calculated gradients
-            model.zero_grad()
-
-            # Perform a forward pass and get logits.
-            logits = model(b_input_ids, b_attn_mask)
-
-            # Compute loss and accumulate the loss values
-            loss = loss_fn(logits, b_labels)
-            batch_loss += loss.item()
-            total_loss += loss.item()
-
-            # Perform a backward pass to calculate gradients
-            loss.backward()
-
-            # Clip the norm of the gradients to 1.0 to prevent "exploding gradients"
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-
-            # Update model parameters:
-            # fine tune BERT params and train additional dense layers
-            optimizer.step()
-            # update learning rate
-            scheduler.step()
-
-            # Print the loss values and time elapsed for every 100 batches
-            if (step % 100 == 0 and step != 0) or (step == len(train_dataloader) - 1):
-                # Calculate time elapsed for 20 batches
-                time_elapsed = time.time() - t0_batch
-
-                print(f"{step:^9} | {batch_loss / batch_counts:^12.6f} | {time_elapsed:^9.2f}")
-
-                # Reset batch tracking variables
-                batch_loss, batch_counts = 0, 0
-                t0_batch = time.time()
-
-            # Calculate the average loss over the entire training data
-        avg_train_loss = total_loss / len(train_dataloader)
-        ###EVALUATION###
-
-        # Put the model into the evaluation mode
-        model.eval()
-
-        # Define empty lists to host accuracy and validation for each batch
-        val_accuracy = []
-        val_loss = []
-
-        for batch in val_dataloader:
-            batch_input_ids, batch_attention_mask, batch_labels = tuple(t.to(DEVICE) for t in batch)
-
-            # We do not want to update the params during the evaluation,
-            # So we specify that we dont want to compute the gradients of the tensors
-            # by calling the torch.no_grad() method
-            with torch.no_grad():
-                logits = model(batch_input_ids, batch_attention_mask)
-
-            loss = loss_fn(logits, batch_labels)
-
-            val_loss.append(loss.item())
-
-            # Get the predictions starting from the logits (get index of highest logit)
-            preds = torch.argmax(logits, dim=1).flatten()
-
-            # Calculate the validation accuracy
-            accuracy = (preds == batch_labels).cpu().numpy().mean() * 100
-            val_accuracy.append(accuracy)
-
-        # Compute the average accuracy and loss over the validation set
-        val_loss = np.mean(val_loss)
-        val_accuracy = np.mean(val_accuracy)
-
-        # Print performance over the entire training data
-        time_elapsed = time.time() - t0_epoch
-        print("-" * 61)
-        print(f"{'AVG TRAIN LOSS':^12} | {'VAL LOSS':^10} | {'VAL ACCURACY (%)':^9} | {'ELAPSED (s)':^9}")
-        print("-" * 61)
-        print(f"{avg_train_loss:^14.6f} | {val_loss:^10.6f} | {val_accuracy:^17.2f} | {time_elapsed:^9.2f}")
-        print("-" * 61)
-        print("\n")
-    torch.save(model.state_dict(),'./model')
-
-BertTrain(bert_classifier, train_dataloader, val_dataloader, epochs=EPOCHS)
-tokenizer.save_pretrained("./model")
 
 def bert_predict(model, test_dataloader):
     # Define empty list to host the predictions
@@ -275,7 +183,7 @@ def bert_predict(model, test_dataloader):
         # Avoid gradient calculation of tensors by using "no_grad()" method
         with torch.no_grad():
             logit = model(batch_input_ids, batch_attention_mask)
-
+            # print(logit.shape) 40个 6种
         # Get index of highest logit
         pred = torch.argmax(logit, dim=1).cpu().numpy()
         # Append predicted class to list
