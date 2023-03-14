@@ -36,10 +36,11 @@ if __name__ == '__main__':
         plt.pie(d_dict,labels=label)
         plt.title(bvstr + " danmuku sentiment percentage")
         plt.savefig('pics//'+bvstr+'_danmuku.png')
+        plt.clf()
         for i in range(6):
-            print("##############",i,"################")
+            print("##############__danmuku",i,"danmuku__################",label[i])
             print(d_ans[i])
         for i in range(6):
-            print("##############",i,"################")
+            print("##############__comment",i,"comment__################",label[i])
             print(c_ans[i])
         print("done")
