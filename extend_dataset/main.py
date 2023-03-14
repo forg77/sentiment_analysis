@@ -54,7 +54,7 @@ for i in range(LOWER_BOUND,UPPER_BOUND+1):
         dlist = []
         clist = []
 
-
+        # print(anslist_content)
         frame = pd.DataFrame(anslist_content,columns=['text','label'])
-        frame.to_csv(WRITEPATH,index=False,header=False)
-        print("done")
+        frame.to_csv(WRITEPATH,mode='a',index=False,header=False)
+        print("5 done")
