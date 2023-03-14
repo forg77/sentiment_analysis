@@ -21,26 +21,33 @@ if __name__ == '__main__':
         c_dict = [0]*6
         d_ans = [[],[],[],[],[],[]]
         c_ans = [[],[],[],[],[],[]]
+        d_cnt = 0
+        c_cnt = 0
         for item in d_pred:
             d_dict[item] += 1
         for i in range(lend):
+            d_cnt += 1
             d_ans[d_pred[i]].append(dlist[i])
         for item in c_pred:
             c_dict[item] += 1
         for i in range(lenc):
+            c_cnt += 1
             c_ans[c_pred[i]].append(clist[i])
-        plt.pie(c_dict,labels=label)
-        plt.title(bvstr + " comment sentiment percentage")
-        plt.savefig('pics//'+bvstr+'_comment.png')
-        plt.clf()
-        plt.pie(d_dict,labels=label)
-        plt.title(bvstr + " danmuku sentiment percentage")
-        plt.savefig('pics//'+bvstr+'_danmuku.png')
-        plt.clf()
         for i in range(6):
             print("##############__danmuku",i,"danmuku__################",label[i])
             print(d_ans[i])
         for i in range(6):
             print("##############__comment",i,"comment__################",label[i])
             print(c_ans[i])
+        if c_cnt != 0:
+            plt.pie(c_dict,labels=label)
+            plt.title(bvstr + " comment sentiment percentage")
+            plt.savefig('pics//'+bvstr+'_comment.png')
+            plt.clf()
+        if d_cnt != 0:
+            plt.pie(d_dict,labels=label)
+            plt.title(bvstr + " danmuku sentiment percentage")
+            plt.savefig('pics//'+bvstr+'_danmuku.png')
+            plt.clf()
+
         print("done")
